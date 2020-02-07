@@ -68,9 +68,9 @@ public class Polynomial {
 		
 		Node firstP = poly1;
 		Node secondP = poly2;
-		Term front = null;
-		Node newLinkedList = new Node(0, 0, null);
-		Term tempFront = newLinkedList.term;
+		Node thirdP = null;
+		Node front = null;
+		float coe = 0;
 		
 		if (firstP == null) {
 			return secondP;
@@ -81,27 +81,63 @@ public class Polynomial {
 		
 		
 		while (firstP != null && secondP != null) {
+			Node t = new Node (firstP.term.coeff, firstP.term.degree, null);
 			if (firstP.term.degree == secondP.term.degree) {
-				float sumCo = firstP.term.coeff + secondP.term.coeff;
-				newLinkedList.next = new Node(sumCo, firstP.term.degree, null);
+				coe = (float)firstP.term.coeff + secondP.term.coeff;
+				t.term.coeff = coe;
 				firstP = firstP.next;
 				secondP = secondP.next;
 			}
 			
-			if (firstP.term.degree < secondP.term.degree) {
-				Node temp = new Node(firstP.term.coeff, firstP.term.degree, null);
-				newLinkedList.next = temp;
+			else if (firstP.term.degree < secondP.term.degree) {
+				coe = firstP.term.coeff;
 				firstP = firstP.next;
 			}
 			
-			if (firstP.term.degree > secondP.term.degree ) {
-				Node temp = new Node(secondP.term.coeff, secondP.term.degree, null);
-				newLinkedList.next = temp;
+			else if (firstP.term.degree > secondP.term.degree ) {
+				t.term.coeff = secondP.term.coeff;
+				t.term.degree = secondP.term.degree;
+				coe = secondP.term.coeff;
 				secondP = secondP.next;
+				
 			}
-		}
-		return null;
+			
+			if (coe != 0 ) {
+				if (front == null) {
+					front = t;
+					thirdP = front;
+				} else {
+					thirdP.next = t;
+					thirdP = thirdP.next;
+					}
+				}
+			}
 		
+		while (firstP != null) {
+			Node t = new Node (firstP.term.coeff, firstP.term.degree, null);
+			if (front == null) {
+				front = t;
+				thirdP = front;
+			} else {
+				thirdP.next = t;
+				thirdP = thirdP.next;
+			} 
+			firstP = firstP.next;
+			
+		}
+		
+		while (secondP != null) {
+			Node t = new Node (secondP.term.coeff, secondP.term.degree, null);
+			if (front == null) {
+				front = t;
+				thirdP = front;
+			} else {
+				thirdP.next = t;
+				thirdP = thirdP.next;
+			} 
+			secondP = secondP.next;
+		}
+		return front;
 		
 	}
 	
