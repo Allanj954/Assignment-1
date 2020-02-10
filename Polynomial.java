@@ -59,26 +59,19 @@ public class Polynomial {
 	 *         is the front of the result polynomial
 	 */
 	public static Node add(Node poly1, Node poly2) {
-		/** COMPLETE THIS METHOD **/
-		// FOLLOWING LINE IS A PLACEHOLDER TO MAKE THIS METHOD COMPILE
-		// CHANGE IT AS NEEDED FOR YOUR IMPLEMENTATION
-		
 
-	
+		if (poly1 == null) {
+			return poly2;
+		}
+		if (poly2 == null) {
+			return poly1;
+		}
 		
 		Node firstP = poly1;
 		Node secondP = poly2;
 		Node thirdP = null;
 		Node front = null;
 		float coe = 0;
-		
-		if (firstP == null) {
-			return secondP;
-		}
-		if (secondP == null) {
-			return firstP;
-		}
-		
 		
 		while (firstP != null && secondP != null) {
 			Node t = new Node (firstP.term.coeff, firstP.term.degree, null);
@@ -106,7 +99,8 @@ public class Polynomial {
 				if (front == null) {
 					front = t;
 					thirdP = front;
-				} else {
+				} 
+				if (front != null) {
 					thirdP.next = t;
 					thirdP = thirdP.next;
 					}
@@ -114,12 +108,11 @@ public class Polynomial {
 			}
 		
 		while (firstP != null) {
-			Node t = new Node (firstP.term.coeff, firstP.term.degree, null);
 			if (front == null) {
-				front = t;
+				front = new Node (firstP.term.coeff, firstP.term.degree, null);
 				thirdP = front;
 			} else {
-				thirdP.next = t;
+				thirdP.next = new Node (firstP.term.coeff, firstP.term.degree, null);;
 				thirdP = thirdP.next;
 			} 
 			firstP = firstP.next;
@@ -127,12 +120,11 @@ public class Polynomial {
 		}
 		
 		while (secondP != null) {
-			Node t = new Node (secondP.term.coeff, secondP.term.degree, null);
 			if (front == null) {
-				front = t;
+				front = new Node (secondP.term.coeff, secondP.term.degree, null);;
 				thirdP = front;
 			} else {
-				thirdP.next = t;
+				thirdP.next = new Node (secondP.term.coeff, secondP.term.degree, null);
 				thirdP = thirdP.next;
 			} 
 			secondP = secondP.next;
@@ -152,11 +144,35 @@ public class Polynomial {
 	 *         is the front of the result polynomial
 	 */
 	public static Node multiply(Node poly1, Node poly2) {
-		/** COMPLETE THIS METHOD **/
-		// FOLLOWING LINE IS A PLACEHOLDER TO MAKE THIS METHOD COMPILE
-		// CHANGE IT AS NEEDED FOR YOUR IMPLEMENTATION
-		return null;
-	}
+		
+		if (poly1 == null || poly2 == null) {
+			return null;
+		}
+		
+		Node firstP = poly1;
+		Node secondP = poly2;
+		Node front1 = null;
+		Node finalP = null;
+		for (Node i = firstP; i != null; i = i.next) {
+			Node finalTemp = null;
+			for (Node a = secondP; a != null; a = a.next) {
+				float coe = i.term.coeff * a.term.coeff;
+				int degree = i.term.degree + a.term.degree;
+				Node localTemp = new Node(coe, degree, null);
+				if (front1 == null) {
+					front1 = localTemp;
+				} else {
+					front1.next = localTemp;
+					}
+				}
+				finalP = Polynomial.add(finalTemp, front1);
+			}
+		return finalP;
+		}
+
+		
+
+	
 		
 	/**
 	 * Evaluates a polynomial at a given value.
@@ -166,10 +182,13 @@ public class Polynomial {
 	 * @return Value of polynomial p at x
 	 */
 	public static float evaluate(Node poly, float x) {
-		/** COMPLETE THIS METHOD **/
-		// FOLLOWING LINE IS A PLACEHOLDER TO MAKE THIS METHOD COMPILE
-		// CHANGE IT AS NEEDED FOR YOUR IMPLEMENTATION
-		return 0;
+		float finalEval = 0;
+		for (Node i = poly; i != null; i = i.next) {
+			finalEval = i.term.coeff * x;
+			finalEval = (float)Math.pow(finalEval, i.term.degree);
+		}
+		
+		return finalEval;
 	}
 	
 	/**
