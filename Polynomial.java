@@ -168,7 +168,6 @@ public class Polynomial {
 					}
 				
 				}
-			System.out.println(Polynomial.toString(front));
 			finalP = Polynomial.add(finalP, front);
 			}
 		return finalP;
