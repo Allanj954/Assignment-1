@@ -151,21 +151,25 @@ public class Polynomial {
 		
 		Node firstP = poly1;
 		Node secondP = poly2;
-		Node front1 = null;
 		Node finalP = null;
 		for (Node i = firstP; i != null; i = i.next) {
+			Node front = null;
 			Node finalTemp = null;
 			for (Node a = secondP; a != null; a = a.next) {
 				float coe = i.term.coeff * a.term.coeff;
 				int degree = i.term.degree + a.term.degree;
 				Node localTemp = new Node(coe, degree, null);
-				if (front1 == null) {
-					front1 = localTemp;
+				if (finalTemp == null) {
+					front = localTemp;
+					finalTemp = front;
 				} else {
-					front1.next = localTemp;
+					finalTemp.next = localTemp;
+					finalTemp = finalTemp.next;
 					}
+				
 				}
-				finalP = Polynomial.add(finalTemp, front1);
+			System.out.println(Polynomial.toString(front));
+			finalP = Polynomial.add(finalP, front);
 			}
 		return finalP;
 		}
@@ -184,8 +188,7 @@ public class Polynomial {
 	public static float evaluate(Node poly, float x) {
 		float finalEval = 0;
 		for (Node i = poly; i != null; i = i.next) {
-			finalEval = i.term.coeff * x;
-			finalEval = (float)Math.pow(finalEval, i.term.degree);
+			finalEval += i.term.coeff * (Math.pow(x, i.term.degree));
 		}
 		
 		return finalEval;
